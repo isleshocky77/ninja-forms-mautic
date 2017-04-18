@@ -124,7 +124,7 @@ final class NF_Mautic_Actions_SendToMautic extends NF_Abstracts_Action
 
                 $mauticKey = $match['value'];
 
-                $updatedData[$mauticKey] = $field['value'];
+                $updatedData[$mauticKey] = (string) $field['value'];
             }
         }
 
