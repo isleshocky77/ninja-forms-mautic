@@ -4,7 +4,7 @@
  * Plugin Name: Ninja Forms - Mautic
  * Plugin URI: http://github.com/isleshocky77/ninja-forms-session
  * Description: Ninja Forms plugin for integrating Mautic as a post submit action.
- * Version: 3.0.2
+ * Version: 3.0.3
  * Requires at least: 4.3
  * Tested up to: 4.7
  * Author: Stephen Ostrow <stephen@ostrow.tech>
@@ -27,7 +27,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
      */
     final class NF_Mautic
     {
-        const VERSION = '3.0.2';
+        const VERSION = '3.0.3';
         const SLUG    = 'mautic';
         const NAME    = 'Mautic';
         const AUTHOR  = 'Stephen Ostrow <stephen@ostrow.tech>';
