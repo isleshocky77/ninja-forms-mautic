@@ -38,25 +38,32 @@ final class NF_Mautic_Actions_SendToMautic extends NF_Abstracts_Action
 
         $this->_nicename = __( 'Send to Mautic', 'ninja-forms' );
 
+        add_action('ninja_forms_builder_templates', array($this, 'builder_templates'));
+
         $this->_settings['field_map'] = array(
             'name' => 'field_map',
             'type' => 'option-repeater',
             'label' => __( 'Field Map' ) . ' <a href="#" class="nf-add-new">' . __( 'Add New' ) . '</a>',
             'width' => 'full',
             'group' => 'primary',
+            'tmpl_row' => 'nf-tmpl-mautic-custom-field-map-row',
             'columns'           => array(
-                'label'          => array(
-                    'header' => 'Ninja Forms Field Key',
-                    'column1'    => __( 'Ninja Forms Field Key' ),
+                'mautic_field_alias'          => array(
+                    'header' => 'Mautic Field Alias',
+                    'column2'    => __( 'Mautic Field Alias' ),
                     'default'   => '',
                 ),
                 'value'          => array(
-                    'header' => 'Mautic Field Key',
-                    'column2'    => __( 'Mautic Field Key' ),
+                    'header' => 'Value',
+                    'column1'    => __( 'Ninja Forms Field Key' ),
                     'default'   => '',
                 ),
             ),
         );
+    }
+
+    public function builder_templates() {
+        NF_Mautic::template('custom-field-map-row.html');
     }
 
     public function process( $action_settings, $form_id, $data )
@@ -108,24 +115,15 @@ final class NF_Mautic_Actions_SendToMautic extends NF_Abstracts_Action
 
         $api = new MauticApi();
         $contactApi = $api->newApi('contacts', $auth, $baseUrl);
+
+
+        if (!isset($action_settings['field_map'])) {
+            return $data;
+        }
+
         $updatedData = [];
-
-        foreach ($data['fields'] as $field) {
-            if (isset($field['manual_key']) && $field['manual_key'] && isset($field['key'])) {
-                $ninjaFormKey = $field['key'];
-
-                $matches = array_filter($action_settings['field_map'], function($fieldMapField) use($ninjaFormKey) {
-                    return $fieldMapField['label'] == $ninjaFormKey;
-                });
-                if (count($matches) !== 1) {
-                    continue;
-                }
-                $match = array_pop($matches);
-
-                $mauticKey = $match['value'];
-
-                $updatedData[$mauticKey] = (string) $field['value'];
-            }
+        foreach ($action_settings['field_map'] as $fieldMap) {
+            $updatedData[$fieldMap['mautic_field_alias']] = $fieldMap['value'];
         }
 
         $contactApi->edit($contactId, $updatedData);

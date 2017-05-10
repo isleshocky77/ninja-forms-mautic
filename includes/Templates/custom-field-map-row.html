@@ -1,0 +1,21 @@
+<script id="nf-tmpl-mautic-custom-field-map-row" type="text/template">
+    <div>
+        <span class="dashicons dashicons-menu handle"></span>
+    </div>
+    <div>
+        <label>
+            <input type="text" class="setting" value="{{{ data.mautic_field_alias }}}" data-id="mautic_field_alias">
+        </label>
+        <span class="nf-option-error"></span>
+    </div>
+    <div>
+        <label class="has-merge-tags">
+            <input type="text" class="setting" value="{{{ data.value }}}" data-id="value">
+            <span class="dashicons dashicons-list-view merge-tags"></span>
+        </label>
+        <span class="nf-option-error"></span>
+    </div>
+    <div>
+        <span class="dashicons dashicons-dismiss nf-delete"></span>
+    </div>
+</script>
