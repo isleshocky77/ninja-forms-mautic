@@ -68,6 +68,10 @@ final class NF_Mautic_Actions_SendToMautic extends NF_Abstracts_Action
 
     public function process( $action_settings, $form_id, $data )
     {
+        if (!isset($_COOKIE['mtc_id'])) {
+            return $data;
+        }
+
         $contactId = $_COOKIE['mtc_id'];
 
         $settings = array(
