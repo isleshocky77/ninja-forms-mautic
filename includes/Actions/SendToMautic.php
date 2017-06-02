@@ -114,6 +114,8 @@ final class NF_Mautic_Actions_SendToMautic extends NF_Abstracts_Action
                 }
             }
         } catch (\Exception $e) {
+            Ninja_Forms()->update_setting('mautic_api_last_status',
+                "Unable to connect to Mautic API: " . $e->getMessage());
             error_log("Unable to connect to Mautic API");
         }
 

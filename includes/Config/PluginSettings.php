@@ -88,4 +88,11 @@ if (!strlen(Ninja_Forms()->get_setting('mautic_api_access_token')) && !isset($_G
 
 }
 
+$settings['mautic_api_last_status'] = array(
+    'id'    => 'mautic_api_last_status',
+    'type'  => 'html',
+    'label' => __( 'API - Last Status', 'ninja-forms-mautic' ),
+    'html' => 'Status: ' . Ninja_Forms()->get_setting('mautic_api_last_status'),
+);
+
 return apply_filters( 'ninja_forms_mautic_plugin_settings', $settings );
