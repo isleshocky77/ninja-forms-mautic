@@ -132,7 +132,13 @@ final class NF_Mautic_Actions_SendToMautic extends NF_Abstracts_Action
             $updatedData[$fieldMap['mautic_field_alias']] = $fieldMap['value'];
         }
 
-        $contactApi->edit($contactId, $updatedData);
+        try {
+            $contactApi->edit($contactId, $updatedData);
+            Ninja_Forms()->update_setting('mautic_api_last_status', sprintf('Contact "%s" Updated', $contactId));
+        } catch (\Exception $e) {
+            Ninja_Forms()->update_setting('mautic_api_last_status', "Error: " . $e->getMessage());
+        }
+
 
         return $data;
     }

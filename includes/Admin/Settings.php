@@ -99,6 +99,8 @@ final class NF_Mautic_Admin_Settings
         Ninja_Forms()->update_setting('mautic_api_access_token_type', false);
         Ninja_Forms()->update_setting('mautic_api_access_refresh_token', false);
 
+
+        wp_redirect(admin_url() . 'admin.php?page=nf-settings#'.NF_Mautic::BOOKMARK);
         wp_redirect( Ninja_Forms()->get_setting('mautic_api_callback', NF_Mautic()->getDefaultCallback()) );
     }
 
@@ -122,7 +124,8 @@ final class NF_Mautic_Admin_Settings
             'version'          => Ninja_Forms()->get_setting('mautic_api_version'),
             'clientKey'        => Ninja_Forms()->get_setting('mautic_api_client_key'),
             'clientSecret'     => Ninja_Forms()->get_setting('mautic_api_client_secret'),
-            'callback'         => Ninja_Forms()->get_setting('mautic_api_callback') ?: NF_Mautic()->getDefaultCallback(),
+            'callback'         => Ninja_Forms()->get_setting('mautic_api_callback')
+                ?: NF_Mautic()->getDefaultCallback(),
         );
 
         $settings['accessToken']        = Ninja_Forms()->get_setting('mautic_api_access_token');
@@ -137,6 +140,7 @@ final class NF_Mautic_Admin_Settings
             if ($auth->validateAccessToken()) {
 
                 if ($auth->accessTokenUpdated()) {
+                    Ninja_Forms()->update_setting('mautic_api_last_status', 'Access Token Updated');
 
                     $accessTokenData = $auth->getAccessTokenData();
 
@@ -154,14 +158,21 @@ final class NF_Mautic_Admin_Settings
                     }
 
                     else {
+                        Ninja_Forms()->update_setting('mautic_api_last_status', 'Invalid OAuth Version');
                         throw new \Exception("Invalid OAuth version");
                     }
+                } else {
+                    Ninja_Forms()->update_setting('mautic_api_last_status', 'Access Token already Valid');
                 }
             } else {
+                Ninja_Forms()->update_setting('mautic_api_last_status', 'Invalid access token');
             }
         } catch (Exception $e) {
+            Ninja_Forms()->update_setting('mautic_api_last_status', 'ERROR: ' . $e->getMessage());
             // Do Error handling
         }
+
+        wp_redirect(admin_url() . 'admin.php?page=nf-settings#' . NF_Mautic::BOOKMARK);
     }
 
 } // End Class NF_Example_Admin_Settings

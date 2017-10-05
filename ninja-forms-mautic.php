@@ -35,6 +35,11 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
         const OPTION  = 'ninja_forms_mautic_options';
 
         /**
+         * @var string ID of Salesforce settings section for redirects
+         */
+        const BOOKMARK = 'ninja_forms_metabox_mautic_settings';
+
+        /**
          * @since 1.4.0
          * @var array $_settings
          */
