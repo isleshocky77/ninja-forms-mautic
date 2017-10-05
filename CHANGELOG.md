@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.1.2
+
+### Changed
+
+* Redirect settings back to the Mautic Settings block with state cleared
+* Add some better logging for failure and success
+
 ## 3.1.1
 
 ### Changed
